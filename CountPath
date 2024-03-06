@@ -1,0 +1,20 @@
+// --- Workbook module ---
+// Calculate the number of paths from top left corner of a grid to right bottom corner
+// In each cells, 0 value means free site, 1 value means wall or obstacle
+// Calculation uses a recursive approach knowing that only right / down movements are allowed (no cycle or back tracking);;
+
+paths = LAMBDA(grid;n;m;
+    IF(INDEX(grid;n;m)=1;
+        0;
+        IF(AND((n=1);(m=1));
+            1;
+            IF(n=1;
+                paths(grid;1;m-1);
+                IF(m=1;
+                    paths(grid;n-1;1);
+                    paths(grid;n-1;m)+paths(grid;n;m-1)
+                )
+            )
+        )
+    )
+);;
