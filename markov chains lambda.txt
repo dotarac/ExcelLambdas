@@ -1,0 +1,11 @@
+history⋋ = LAMBDA(history,DROP(REDUCE("",history,LAMBDA(a,v,VSTACK(a,v()))),1)) ;;
+
+markov⋋= LAMBDA(init_state,transition_matrix,nb_iter,LET(data,SCAN(thunk⋋(init_state),SEQUENCE(nb_iter),LAMBDA(acc,v,thunk⋋(MMULT(acc(),transition_matrix)))),history⋋(data))) :
+
+MarkovChain = LAMBDA(P,Init,n,IF(n=0,Init,VSTACK(Init,MarkovChain(P,MMULT(Init,P),n-1)))) ;
+
+MarkovState = =LAMBDA(init_state,transtion_matrix,nb_iter,REDUCE(init_state,SEQUENCE(nb_iter),LAMBDA(a,v,MMULT(a,transtion_matrix)))) ;
+
+thunk⋋ = LAMBDA(x,LAMBDA(x)) ;
+
+time⋋ = LAMBDA(thunk,LET(start,NOW(),value,thunk(),end,NOW(),ms,(end-start)*24*60*60*1000,HSTACK(ms," ms"))) ;
